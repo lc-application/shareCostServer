@@ -15,9 +15,13 @@ public class UserLogin {
     @Column(name = "password")
     private String password;
 
-    UserLogin(String username, String password){
+    public UserLogin(String username, String password){
         this.username = username;
         this.password = password;
+    }
+
+    public UserLogin(){
+
     }
     public String getUsername(){
         return this.username;
