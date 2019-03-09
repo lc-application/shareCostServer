@@ -15,6 +15,11 @@ public class HelloController {
     @Autowired
     private HelloRepository helloRepository;
 
+    @RequestMapping("/")
+    public String helloIndex(){
+        return "Welcome";
+    }
+
     @RequestMapping("/api/hello/insert")
     public Hello insertHelloObject() {
         Hello obj = new Hello("Hello my team!");
