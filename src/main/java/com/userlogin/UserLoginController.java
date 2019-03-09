@@ -1,11 +1,11 @@
 package com.userlogin;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -15,8 +15,12 @@ public class UserLoginController {
     UserLoginRepository userLoginRepository;
 
     @PostMapping("/api/user/userlogin")
-    public boolean userLogin(@RequestBody UserLogin userLogin){
+    public HttpStatus userLogin(@RequestBody UserLogin userLogin){
         List<UserLogin> userLoginList = userLoginRepository.findByUsernameAndPassword(userLogin.getUsername(), userLogin.getPassword());
-        return userLoginList.size() == 1;
+        if (userLoginList.size() == 1){
+            return HttpStatus.OK;
+        } else {
+            return HttpStatus.BAD_REQUEST;
+        }
     }
 }
