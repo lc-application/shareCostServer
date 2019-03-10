@@ -10,8 +10,12 @@ import java.util.List;
 @RestController
 public class UserLoginController {
 
+    private final UserLoginRepository userLoginRepository;
+
     @Autowired
-    UserLoginRepository userLoginRepository;
+    public UserLoginController(UserLoginRepository userLoginRepository) {
+        this.userLoginRepository = userLoginRepository;
+    }
 
     @PostMapping("/api/user/userlogin")
     public ResponseEntity<JSONObject> userLogin(@RequestBody UserLogin userLogin){

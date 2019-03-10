@@ -1,10 +1,8 @@
 package com.hello;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -12,8 +10,12 @@ import java.util.List;
 @RestController
 public class HelloController {
 
+    private final HelloRepository helloRepository;
+
     @Autowired
-    private HelloRepository helloRepository;
+    public HelloController(HelloRepository helloRepository) {
+        this.helloRepository = helloRepository;
+    }
 
     @RequestMapping("/")
     public String helloIndex(){
@@ -38,9 +40,7 @@ public class HelloController {
 
     @RequestMapping("/api/hello/select/all")
     public List<Hello> selectAllHelloObjects() {
-        List<Hello> hellos =
-                (List<Hello>)helloRepository.findAll();
-        return hellos;
+        return helloRepository.findAll();
     }
 
     @RequestMapping("/api/hello/string")
@@ -50,8 +50,7 @@ public class HelloController {
 
     @RequestMapping("/api/hello/object")
     public Hello sayHelloObject() {
-        Hello obj = new Hello("Hello Team!");
-        return obj;
+        return new Hello("Hello Team!");
     }
 
 }
