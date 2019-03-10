@@ -1,5 +1,7 @@
 package com.userlogin;
 
+import java.util.Objects;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,8 +17,10 @@ public class UserLogin {
     @Column(name = "password")
     private String password;
 
+
     public UserLogin(String username, String password){
         this.username = username;
+
         this.password = password;
     }
 
@@ -30,4 +34,28 @@ public class UserLogin {
     public String getPassword(){
         return this.password;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserLogin userLogin = (UserLogin) o;
+        return Objects.equals(getUsername(), userLogin.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getUsername());
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }
