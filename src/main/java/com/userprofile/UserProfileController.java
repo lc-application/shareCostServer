@@ -5,6 +5,7 @@ import com.userlogin.UserLoginRepository;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,6 +79,13 @@ public class UserProfileController {
   public ResponseEntity userUpdate(@RequestBody UserProfile userProfile) {
     userProfileRepository.save(userProfile);
     return ResponseEntity.ok(userProfile);
+  }
+
+  @PostMapping("/api/user/userdelete")
+  public ResponseEntity userDelete(@RequestBody JSONObject jsonObject){
+    userProfileRepository.deleteByUsername((String)jsonObject.get("username"));
+    jsonObject.put("status", "Success");
+    return ResponseEntity.ok(jsonObject);
   }
 
 }
