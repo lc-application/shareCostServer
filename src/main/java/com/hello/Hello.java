@@ -1,6 +1,5 @@
 package com.hello;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 @Entity

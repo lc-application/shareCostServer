@@ -39,7 +39,7 @@ public class UserProfile {
   @Column(name = "showphonenumber")
   private boolean showPhoneNumber;
 
-  UserProfile(String username, String firstName, String lastName,
+  public UserProfile(String username, String firstName, String lastName,
               String email, String phoneNumber, boolean showName,
               boolean showEmail, boolean showPhoneNumber) {
     this.username = username;
@@ -52,7 +52,11 @@ public class UserProfile {
     this.showPhoneNumber = showPhoneNumber;
   }
 
-  UserProfile(){}
+  public UserProfile(){}
+
+  public int getId(){
+    return this.id;
+  }
 
   public void setUsername(String username) {
     this.username = username;
@@ -106,15 +110,13 @@ public class UserProfile {
     return phoneNumber;
   }
 
-  public boolean isShowName() {
-    return showName;
-  }
+  public boolean getShowName() { return this.showName; }
 
-  public boolean isShowEmail() {
+  public boolean getShowEmail() {
     return showEmail;
   }
 
-  public boolean isShowPhoneNumber() {
+  public boolean getShowPhoneNumber() {
     return showPhoneNumber;
   }
 
@@ -123,22 +125,11 @@ public class UserProfile {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     UserProfile that = (UserProfile) o;
-    return id == that.id &&
-            isShowName() == that.isShowName() &&
-            isShowEmail() == that.isShowEmail() &&
-            isShowPhoneNumber() == that.isShowPhoneNumber() &&
-            Objects.equals(getUsername(), that.getUsername()) &&
-            Objects.equals(getFirstName(), that.getFirstName()) &&
-            Objects.equals(getLastName(), that.getLastName()) &&
-            Objects.equals(getEmail(), that.getEmail()) &&
-            Objects.equals(getPhoneNumber(), that.getPhoneNumber());
+    return id == that.id;
   }
 
   @Override
   public int hashCode() {
-
-    return Objects.hash(id, getUsername(), getFirstName(), getLastName(),
-                            getEmail(), getPhoneNumber(), isShowName(),
-                            isShowEmail(), isShowPhoneNumber());
+    return Objects.hash(id);
   }
 }

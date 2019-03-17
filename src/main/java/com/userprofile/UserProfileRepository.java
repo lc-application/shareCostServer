@@ -7,4 +7,5 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
   boolean existsByPhoneNumber(String phoneNumber);
   UserProfile findUserProfileByUsername(String username);
   void deleteByUsername(String username);
+
 }
