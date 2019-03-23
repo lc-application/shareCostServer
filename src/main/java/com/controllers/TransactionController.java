@@ -21,7 +21,7 @@ public class TransactionController {
     @PostMapping("/api/transaction/create")
     public ResponseEntity transactionCreate(@RequestBody JSONObject request) {
         if (request == null) {
-            throw new IllegalArgumentException();
+            return ResponseEntity.badRequest().body("Null Request");
         }
 
         Object fromObject = request.get("from");
@@ -30,7 +30,7 @@ public class TransactionController {
         Object titleObject = request.get("title");
         Object detailObject = request.get("detail");
         if (fromObject == null || toObject == null || valueObject == null || titleObject == null) {
-            throw new IllegalArgumentException();
+            return ResponseEntity.badRequest().body("Null Request");
         }
 
         String from = fromObject.toString();
@@ -45,15 +45,15 @@ public class TransactionController {
     }
 
     @PostMapping("/api/transaction/get")
-    public ResponseEntity<JSONObject> transactionGet(@RequestBody JSONObject request) {
+    public ResponseEntity transactionGet(@RequestBody JSONObject request) {
         if (request == null) {
-            throw new IllegalArgumentException();
+            return ResponseEntity.badRequest().body("Transaction get NUll Request");
         }
 
         Object fromObject = request.get("from");
 
         if (fromObject == null) {
-            throw new IllegalArgumentException();
+            return ResponseEntity.badRequest().body("Transaction get NUll Request");
         }
 
         String from = fromObject.toString();

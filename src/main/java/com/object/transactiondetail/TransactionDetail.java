@@ -1,6 +1,8 @@
 package com.object.transactiondetail;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +27,9 @@ public class TransactionDetail {
     @Column(name = "detail")
     private String detail;
 
+    @Column(name = "date")
+    private String date;
+
     public TransactionDetail(){}
 
     public TransactionDetail(String from, String to, int value, String title, String detail){
@@ -33,6 +38,8 @@ public class TransactionDetail {
         this.value = value;
         this.title = title;
         this.detail = detail;
+        Date date = new Date();
+        this.date = date.toString();
     }
 
     @Override
