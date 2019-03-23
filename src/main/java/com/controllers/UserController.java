@@ -1,7 +1,7 @@
 package com.controllers;
 
 import com.service.UserService;
-import com.userprofile.UserProfile;
+import com.object.userprofile.UserProfile;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/api/user/userlogin")
     public ResponseEntity userLogin(@RequestBody JSONObject request){

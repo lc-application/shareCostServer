@@ -1,9 +1,9 @@
 package com.service;
 
-import com.userlogin.UserLogin;
-import com.userlogin.UserLoginRepository;
-import com.userprofile.UserProfile;
-import com.userprofile.UserProfileRepository;
+import com.object.userlogin.UserLogin;
+import com.object.userlogin.UserLoginRepository;
+import com.object.userprofile.UserProfile;
+import com.object.userprofile.UserProfileRepository;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,24 @@ import java.lang.reflect.Method;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserLoginRepository userLoginRepository;
+    private final UserLoginRepository userLoginRepository;
 
-    @Autowired
-    private UserProfileRepository userProfileRepository;
+    private final UserProfileRepository userProfileRepository;
 
     private final String[] userProfileStringField = {"Username", "FirstName", "LastName", "Email", "PhoneNumber"};
     private final String[] userProfileBooleanField = {"ShowName", "ShowEmail", "ShowPhoneNumber"};
 
-    public String[] getUserProfileStringField(){
+    @Autowired
+    public UserService(UserLoginRepository userLoginRepository, UserProfileRepository userProfileRepository) {
+        this.userLoginRepository = userLoginRepository;
+        this.userProfileRepository = userProfileRepository;
+    }
+
+    private String[] getUserProfileStringField(){
         return this.userProfileStringField;
     }
 
-    public String[] getuserProfileBooleanField(){
+    private String[] getuserProfileBooleanField(){
         return this.userProfileBooleanField;
     }
 
@@ -156,7 +160,7 @@ public class UserService {
                         }
                     }
                     Method m = UserProfile.class.getMethod("set" + s, String.class);
-                    m.invoke(userProfile, jsonObject.get(s).toString());
+                    m.invoke(userProfile, jsonObject.get(tempObject).toString());
                 }
             } catch (Exception e) {
                 // NoSuchMethodException, InvocationTargetException, IllegalException
@@ -172,7 +176,7 @@ public class UserService {
                 if(tempObject != null) {
                     tempString = tempObject.toString();
                     Method m = UserProfile.class.getMethod("set" + s, Boolean.class);
-                    m.invoke(userProfile, jsonObject.get(s) == "true");
+                    m.invoke(userProfile, jsonObject.get(tempObject) == "true");
                 }
             } catch (Exception e) {
                 // NoSuchMethodException, InvocationTargetException, IllegalException

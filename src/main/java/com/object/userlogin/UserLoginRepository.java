@@ -1,4 +1,4 @@
-package com.userlogin;
+package com.object.userlogin;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

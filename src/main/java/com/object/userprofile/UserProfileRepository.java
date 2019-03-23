@@ -1,4 +1,4 @@
-package com.userprofile;// Created by xuanyuli on 3/9/19.
+package com.object.userprofile;// Created by xuanyuli on 3/9/19.
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
