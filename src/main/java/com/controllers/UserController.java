@@ -96,6 +96,18 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/api/user/userpart")
+    public ResponseEntity userPart(@RequestBody JSONObject request){
+        try{
+            String username = userService.getUsernameFromRequest(request);
+            UserProfile userProfile = userService.getPartUserProfile(username);
+            return ResponseEntity.ok().body(userProfile);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Not found username");
+        }
+
+    }
+
 }
 
 
