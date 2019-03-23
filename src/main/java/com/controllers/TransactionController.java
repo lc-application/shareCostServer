@@ -27,16 +27,19 @@ public class TransactionController {
         Object fromObject = request.get("from");
         Object toObject = request.get("to");
         Object valueObject = request.get("value");
-
-        if (fromObject == null || toObject == null || valueObject == null) {
+        Object titleObject = request.get("title");
+        Object detailObject = request.get("detail");
+        if (fromObject == null || toObject == null || valueObject == null || titleObject == null) {
             throw new IllegalArgumentException();
         }
 
         String from = fromObject.toString();
         String to = toObject.toString();
         int value = Integer.valueOf(valueObject.toString());
+        String title = titleObject.toString();
+        String detail = detailObject.toString();
 
-        transactionService.createTransaction(from, to, value);
+        transactionService.createTransaction(from, to, value, title, detail);
 
         return ResponseEntity.ok().build();
     }

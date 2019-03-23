@@ -19,12 +19,20 @@ public class TransactionDetail {
     @Column(name = "value")
     private int value;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "detail")
+    private String detail;
+
     public TransactionDetail(){}
 
-    public TransactionDetail(String from, String to, int value){
+    public TransactionDetail(String from, String to, int value, String title, String detail){
         this.from = from;
         this.to = to;
         this.value = value;
+        this.title = title;
+        this.detail = detail;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class TransactionService {
         return runningTotal;
     }
 
-    public void createTransaction(String from, String to, int value){
+    public void createTransaction(String from, String to, int value, String title, String detail){
         if (transactionRepository.existsByFromAndTo(from,to)){
             Transaction transaction = transactionRepository.findByFromAndTo(from, to);
             transaction.setValue(transaction.getValue() + value);
@@ -47,7 +47,7 @@ public class TransactionService {
             transactionRepository.flush();
         }
 
-        transactionDetailRepository.save(new TransactionDetail(from, to, value));
+        transactionDetailRepository.save(new TransactionDetail(from, to, value, title, detail));
         transactionDetailRepository.flush();
 
     }
