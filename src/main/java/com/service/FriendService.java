@@ -41,8 +41,8 @@ public class FriendService {
     }
 
     public List<String> getFriendList(String from){
-        List<Friend> friendList = friendRepository.findAllByFrom(from, 1);
-        friendList.addAll(friendRepository.findAllByTo(from, 1));
+        List<Friend> friendList = friendRepository.findAllByFromAndStatus(from, 1);
+        friendList.addAll(friendRepository.findAllByToAndStatus(from, 1));
         List<String> result = new ArrayList<>();
         for(Friend f : friendList){
             result.add(f.getTo());
@@ -51,7 +51,7 @@ public class FriendService {
     }
 
     public List<String> getRequestList(String from){
-        List<Friend> friendList = friendRepository.findAllByTo(from, 0);
+        List<Friend> friendList = friendRepository.findAllByToAndStatus(from, 0);
         List<String> result = new ArrayList<>();
         for(Friend f : friendList){
             result.add(f.getTo());

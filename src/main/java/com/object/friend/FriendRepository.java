@@ -9,6 +9,6 @@ public interface FriendRepository extends JpaRepository<Friend, Integer> {
     Friend findByFromAndTo(String from, String to);
     boolean existsByFromAndTo(String from, String to);
     List<Friend> findAllByFromAndToAndStatus(String from, String to, int status);
-    List<Friend> findAllByFrom(String from, int status);
-    List<Friend> findAllByTo(String to, int status);
+    List<Friend> findAllByFromAndStatus(String from, int status);
+    List<Friend> findAllByToAndStatus(String to, int status);
 }
