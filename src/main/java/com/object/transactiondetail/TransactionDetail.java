@@ -1,10 +1,10 @@
 package com.object.transactiondetail;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name="transactiondetail")
 public class TransactionDetail {
     @Id
     @GeneratedValue
