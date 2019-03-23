@@ -1,5 +1,6 @@
 package com.controllers;
 
+import com.object.transaction.Transaction;
 import com.service.TransactionService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class TransactionController {
@@ -44,24 +47,42 @@ public class TransactionController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/api/transaction/get")
+    @PostMapping("/api/transaction/getValue")
     public ResponseEntity transactionGet(@RequestBody JSONObject request) {
+        try{
+            String from = parseFromFromRequest(request);
+            int total = transactionService.getTransactionTotal(from);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("username", from);
+            jsonObject.put("value", total);
+            return ResponseEntity.ok().body(jsonObject);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Transaction get NUll Request");
+        }
+    }
+
+    @PostMapping("/api/transaction/getDetail")
+    public ResponseEntity transactionGetDetail(@RequestBody JSONObject request) {
+        try{
+            String from = parseFromFromRequest(request);
+            List<Transaction> transactionList = transactionService.getAllTransactionByUserName(from);
+            return ResponseEntity.ok().body(transactionList);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Transaction get NUll Request");
+        }
+
+
+
+    }
+
+    private String parseFromFromRequest(JSONObject request){
         if (request == null) {
-            return ResponseEntity.badRequest().body("Transaction get NUll Request");
+            throw new IllegalArgumentException();
         }
-
         Object fromObject = request.get("from");
-
         if (fromObject == null) {
-            return ResponseEntity.badRequest().body("Transaction get NUll Request");
+            throw new IllegalArgumentException();
         }
-
-        String from = fromObject.toString();
-
-        int total = transactionService.getTransactionTotal(from);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("username", from);
-        jsonObject.put("value", total);
-        return ResponseEntity.ok().body(jsonObject);
+        return fromObject.toString();
     }
 }

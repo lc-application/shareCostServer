@@ -62,10 +62,7 @@ public class FriendController {
         String from = fromObject.toString();
         List<String> friendNameList = friendService.getFriendList(from);
         JSONObject jsonObject = new JSONObject();
-        for(int i = 0; i < friendNameList.size(); i++) {
-            jsonObject.put(i, friendNameList.get(i));
-        }
-        return ResponseEntity.ok().body(jsonObject);
+        return ResponseEntity.ok().body(friendNameList);
 
     }
 

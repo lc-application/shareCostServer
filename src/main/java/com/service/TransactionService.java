@@ -22,7 +22,7 @@ public class TransactionService {
         this.transactionDetailRepository = transactionDetailRepository;
     }
 
-    private List<Transaction> getAllTransactionByUserName(String username){
+    public List<Transaction> getAllTransactionByUserName(String username){
         return transactionRepository.findAllByFrom(username);
     }
 
@@ -34,6 +34,7 @@ public class TransactionService {
         }
         return runningTotal;
     }
+
 
     public void createTransaction(String from, String to, int value, String title, String detail){
         if (transactionRepository.existsByFromAndTo(from,to)){
