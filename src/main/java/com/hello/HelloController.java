@@ -34,7 +34,7 @@ public class HelloController {
     @RequestMapping("/api/hello/insert/{msg}")
     public Hello insertMessage(@PathVariable("msg") String message) {
         Hello obj = new Hello(message);
-        EmailService.sendRegisterEmail("message", "Hello");
+        EmailService.sendRegisterEmail(message, "Hello");
         helloRepository.save(obj);
         helloRepository.flush();
         return obj;
