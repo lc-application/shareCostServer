@@ -28,13 +28,13 @@ public class HelloController {
         Hello obj = new Hello("Hello my team!");
         helloRepository.save(obj);
         helloRepository.flush();
-        EmailService.sendRegisterEmail("Lixuanyu1993@gmail.com", "BILL");
         return obj;
     }
 
     @RequestMapping("/api/hello/insert/{msg}")
     public Hello insertMessage(@PathVariable("msg") String message) {
         Hello obj = new Hello(message);
+        EmailService.sendRegisterEmail("message", "Hello");
         helloRepository.save(obj);
         helloRepository.flush();
         return obj;
