@@ -1,5 +1,6 @@
 package com.controllers;
 
+import com.service.EmailService;
 import com.service.UserService;
 import com.object.userprofile.UserProfile;
 import org.json.simple.JSONObject;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -53,6 +53,9 @@ public class UserController {
         userService.createUserProfile(userProfile);
 
         if (userService.checkUserNameExists(username)){
+            if (userProfile.getEmail() != null){
+                EmailService.sendRegisterEmail(userProfile.getEmail(), userProfile.getUsername());
+            }
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().body("create failed");

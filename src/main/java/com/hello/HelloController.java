@@ -1,5 +1,6 @@
 package com.hello;
 
+import com.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class HelloController {
         Hello obj = new Hello("Hello my team!");
         helloRepository.save(obj);
         helloRepository.flush();
+        EmailService.sendRegisterEmail("Lixuanyu1993@gmail.com", "BILL");
         return obj;
     }
 
