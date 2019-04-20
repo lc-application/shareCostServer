@@ -1,9 +1,13 @@
 package com.object.transactiondetail;
 
-import javax.persistence.*;
-import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="transactiondetail")
@@ -12,10 +16,10 @@ public class TransactionDetail {
     @GeneratedValue
     private int id;
 
-    @Column(name = "from")
+    @Column(name = "start")
     private String from;
 
-    @Column(name = "to")
+    @Column(name = "receive")
     private String to;
 
     @Column(name = "value")
