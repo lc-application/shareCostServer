@@ -44,7 +44,6 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
         String password = passwordObject.toString();
-        userService.createUserLogin(username, password);
 
 
         // User profile
@@ -72,11 +71,6 @@ public class UserController {
         int userId = oldUserProfile.getId();
 
         // Password for update
-        Object passwordObject = request.get("password");
-        if (passwordObject != null) {
-            String password = passwordObject.toString();
-            userService.updateUserLogin(userId, username, password);
-        }
         try{
             userService.getUserProfileFromRequest(request, oldUserProfile);
         } catch (IllegalArgumentException e){
@@ -94,7 +88,6 @@ public class UserController {
     @PostMapping("/api/user/userdelete")
     public ResponseEntity userDelete(@RequestBody JSONObject request){
         String username = userService.getUsernameFromRequest(request);
-        userService.deleteUserLogin(username);
         userService.deleteUserProfile(username);
         return ResponseEntity.ok().build();
     }

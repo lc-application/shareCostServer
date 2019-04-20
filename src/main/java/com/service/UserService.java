@@ -1,9 +1,8 @@
 package com.service;
 
-import com.object.userlogin.UserLogin;
-import com.object.userlogin.UserLoginRepository;
 import com.object.userprofile.UserProfile;
 import com.object.userprofile.UserProfileRepository;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,17 +11,13 @@ import java.lang.reflect.Method;
 
 @Service
 public class UserService {
-
-    private final UserLoginRepository userLoginRepository;
-
     private final UserProfileRepository userProfileRepository;
 
-    private final String[] userProfileStringField = {"Username", "FirstName", "LastName", "Email", "PhoneNumber"};
+    private final String[] userProfileStringField = {"Username", "Password", "FirstName", "LastName", "Email", "PhoneNumber"};
     private final String[] userProfileBooleanField = {"ShowName", "ShowEmail", "ShowPhoneNumber"};
 
     @Autowired
-    public UserService(UserLoginRepository userLoginRepository, UserProfileRepository userProfileRepository) {
-        this.userLoginRepository = userLoginRepository;
+    public UserService(UserProfileRepository userProfileRepository) {
         this.userProfileRepository = userProfileRepository;
     }
 
@@ -35,35 +30,19 @@ public class UserService {
     }
 
     public boolean checkUserNameExists(String username){
-        return userLoginRepository.existsByUsername(username);
+        return userProfileRepository.existsByUsername(username);
     }
 
-    // UserLogin support
-    public void createUserLogin(String username, String password){
-        userLoginRepository.save(new UserLogin(username, password));
-        userLoginRepository.flush();
-    }
-
-    public boolean checkUserLogin(String username, String password){
-        return userLoginRepository.existsUserLoginByUsernameAndPassword(username, password);
-    }
-
-    public void updateUserLogin(int id, String username, String password){
-        UserLogin userLogin = userLoginRepository.getOne(id);
-        userLogin.setUsername(username);
-        userLogin.setPassword(password);
-        userLoginRepository.save(userLogin);
-    }
-
-    public void deleteUserLogin(String username){
-        userLoginRepository.deleteByUsername(username);
-    }
 
     // UserProfile support
+    public boolean checkUserLogin(String username, String password){
+        return userProfileRepository.existsByUsernameAndPassword(username, password);
+    }
 
-    public void createUserProfile(String username, String firstName, String lastName,  String email, String phoneNumber,
+
+    public void createUserProfile(String username, String password, String firstName, String lastName,  String email, String phoneNumber,
                                   boolean showName, boolean showEmail, boolean showPhoneNumber){
-        userProfileRepository.save(new UserProfile(username, firstName, lastName, email,
+        userProfileRepository.save(new UserProfile(username, password, firstName, lastName, email,
                                                    phoneNumber, showName, showEmail, showPhoneNumber));
         userProfileRepository.flush();
     }
@@ -100,11 +79,12 @@ public class UserService {
         return userProfileRepository.existsByPhoneNumber(phoneNumber);
     }
 
-    public void updateUserProfile(int id, String username, String firstName,
+    public void updateUserProfile(int id, String username, String password, String firstName,
                                   String lastName, String email, String phoneNumber,
                                   boolean showName, boolean showEmail, boolean showPhoneNumber){
         UserProfile userProfile = userProfileRepository.getOne(id);
         userProfile.setUsername(username);
+        userProfile.setPassword(password);
         userProfile.setFirstName(firstName);
         userProfile.setLastName(lastName);
         userProfile.setEmail(email);
