@@ -103,18 +103,32 @@ public class UserService {
         userProfileRepository.deleteByUsername(username);
     }
 
-    public String getUsernameFromRequest(JSONObject jsonObject){
+    public int getIntFieldFromRequest(JSONObject jsonObject, String fieldName){
         if (jsonObject == null){
             throw new IllegalArgumentException();
         }
 
-        Object usernameObject = jsonObject.get("username");
+        Object obj = jsonObject.get(fieldName);
 
-        if (usernameObject == null) {
+        if (obj == null) {
             throw new IllegalArgumentException();
         }
 
-        return usernameObject.toString();
+        return Integer.parseInt(obj.toString());
+    }
+
+    public String getStringFieldFromRequest(JSONObject jsonObject, String fieldName) {
+        if (jsonObject == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Object obj = jsonObject.get(fieldName);
+
+        if (obj == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return obj.toString();
     }
 
     public void getUserProfileFromRequest(JSONObject jsonObject, UserProfile userProfile){

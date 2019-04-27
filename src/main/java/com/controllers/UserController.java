@@ -21,12 +21,14 @@ public class UserController {
 
     @PostMapping("/api/user/userlogin")
     public ResponseEntity userLogin(@RequestBody JSONObject request){
-        String username = userService.getUsernameFromRequest(request);
-        Object passwordObject = request.get("password");
-        String password = passwordObject.toString();
+        String username = userService.getStringFieldFromRequest(request, "username");
+        String password = userService.getStringFieldFromRequest(request, "password");
 
-        if (userService.checkUserLogin(username, password)){
-            return ResponseEntity.notFound().build();
+        if (!userService.checkUserNameExists(username)) {
+            return ResponseEntity.badRequest().body("Error: Username doest not exists");
+        }
+        if (!userService.checkUserLogin(username, password)){
+            return ResponseEntity.badRequest().body("Error: Authentication Failed");
         }
 
         UserProfile userProfile = userService.getFullUserProfile(username);
@@ -36,36 +38,28 @@ public class UserController {
     @PostMapping("/api/user/usercreate")
     public ResponseEntity userCreate(@RequestBody JSONObject request) {
 
-        String username = userService.getUsernameFromRequest(request);
+        String username = userService.getStringFieldFromRequest(request, "username");
 
-        // Password for login
-        Object passwordObject = request.get("password");
-        if (passwordObject == null) {
-            return ResponseEntity.badRequest().build();
+        if (userService.checkUserNameExists(username)){
+            return ResponseEntity.badRequest().body("Error: Username exists");
         }
-        String password = passwordObject.toString();
-
 
         // User profile
         UserProfile userProfile = new UserProfile();
         userService.getUserProfileFromRequest(request, userProfile);
 
-        if (!userService.checkUserNameExists(username)){
-            userService.createUserProfile(userProfile);
-            if (userProfile.getEmail() != null){
-                EmailService.sendRegisterEmail(userProfile.getEmail(), userProfile.getUsername());
-            }
-            return ResponseEntity.ok(userProfile);
-        } else {
-            return ResponseEntity.badRequest().body("create failed");
+        if (userProfile.getEmail() != null){
+            EmailService.sendRegisterEmail(userProfile.getEmail(), userProfile.getUsername());
         }
 
+        userService.createUserProfile(userProfile);
 
+        return ResponseEntity.ok(userProfile);
     }
 
     @PostMapping("/api/user/userupdate")
     public ResponseEntity userUpdate(@RequestBody JSONObject request) {
-        String username = userService.getUsernameFromRequest(request);
+        String username = userService.getStringFieldFromRequest(request, "username");
 
         UserProfile oldUserProfile = userService.getFullUserProfile(username);
         int userId = oldUserProfile.getId();
@@ -87,7 +81,7 @@ public class UserController {
 
     @PostMapping("/api/user/userdelete")
     public ResponseEntity userDelete(@RequestBody JSONObject request){
-        String username = userService.getUsernameFromRequest(request);
+        String username = userService.getStringFieldFromRequest(request, "username");
         userService.deleteUserProfile(username);
         return ResponseEntity.ok().build();
     }
@@ -95,7 +89,7 @@ public class UserController {
     @PostMapping("/api/user/userpart")
     public ResponseEntity userPart(@RequestBody JSONObject request){
         try{
-            String username = userService.getUsernameFromRequest(request);
+            String username = userService.getStringFieldFromRequest(request, "username");
             UserProfile userProfile = userService.getPartUserProfile(username);
             return ResponseEntity.ok().body(userProfile);
         } catch (Exception e){

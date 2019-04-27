@@ -24,7 +24,7 @@ public class FileUploadController {
 
     @PostMapping("/api/fileupload/user/")
     public ResponseEntity userFileUpload(@RequestParam JSONObject request){
-        String username = userService.getUsernameFromRequest(request);
+        String username = userService.getStringFieldFromRequest(request, "username");
 
         if (request.containsKey("file")){
             Object fileObject = request.get("file");
