@@ -49,9 +49,9 @@ public class UserController {
         // User profile
         UserProfile userProfile = new UserProfile();
         userService.getUserProfileFromRequest(request, userProfile);
-        userService.createUserProfile(userProfile);
 
-        if (userService.checkUserNameExists(username)){
+        if (!userService.checkUserNameExists(username)){
+            userService.createUserProfile(userProfile);
             if (userProfile.getEmail() != null){
                 EmailService.sendRegisterEmail(userProfile.getEmail(), userProfile.getUsername());
             }

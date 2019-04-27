@@ -140,7 +140,7 @@ public class UserService {
                         }
                     }
                     Method m = UserProfile.class.getMethod("set" + s, String.class);
-                    m.invoke(userProfile, jsonObject.get(tempObject).toString());
+                    m.invoke(userProfile, tempObject.toString());
                 }
             } catch (Exception e) {
                 // NoSuchMethodException, InvocationTargetException, IllegalException
