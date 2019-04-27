@@ -52,7 +52,7 @@ public class UserService {
         userProfileRepository.flush();
     }
 
-    public UserProfile getFullUserProfile(int userId){
+    public UserProfile getFullUserProfileById(String userId){
         return userProfileRepository.findUserProfileById(userId);
     }
 
@@ -104,7 +104,7 @@ public class UserService {
         userProfileRepository.save(oldUserProfile);
     }
 
-    public void deleteUserProfile(int userId){
+    public void deleteUserProfile(String userId){
         userProfileRepository.deleteById(userId);
     }
 

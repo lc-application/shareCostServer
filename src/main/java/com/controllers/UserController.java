@@ -59,7 +59,7 @@ public class UserController {
 
     @PostMapping("/api/user/userupdate")
     public ResponseEntity userUpdate(@RequestBody JSONObject request) {
-        int userId = userService.getIntFieldFromRequest(request, "id");
+        String userId = userService.getStringFieldFromRequest(request, "id");
 
         UserProfile oldUserProfile = userService.getFullUserProfile(userId);
         try{
@@ -77,7 +77,7 @@ public class UserController {
 
     @PostMapping("/api/user/userdelete")
     public ResponseEntity userDelete(@RequestBody JSONObject request){
-        int userId = userService.getIntFieldFromRequest(request, "id");
+        String userId = userService.getStringFieldFromRequest(request, "id");
         userService.deleteUserProfile(userId);
         return ResponseEntity.ok().build();
     }

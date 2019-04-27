@@ -1,5 +1,7 @@
 package com.object.userprofile;// Created by xuanyuli on 3/9/19.
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -12,8 +14,9 @@ import javax.persistence.Table;
 @Table(name = "userprofile")
 public class UserProfile {
   @Id
-  @GeneratedValue
-  private int id;
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  private String id;
 
   @Column(name = "username")
   private String username;
@@ -58,7 +61,7 @@ public class UserProfile {
 
   public UserProfile(){}
 
-  public int getId(){
+  public String getId(){
     return this.id;
   }
 
@@ -133,7 +136,7 @@ public class UserProfile {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     UserProfile that = (UserProfile) o;
-    return id == that.id || username.equals(that.username);
+    return id.equals(that.id);
   }
 
   @Override
