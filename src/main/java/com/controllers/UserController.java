@@ -59,18 +59,14 @@ public class UserController {
 
     @PostMapping("/api/user/userupdate")
     public ResponseEntity userUpdate(@RequestBody JSONObject request) {
-        String username = userService.getStringFieldFromRequest(request, "username");
+        int userId = userService.getIntFieldFromRequest(request, "id");
 
-        UserProfile oldUserProfile = userService.getFullUserProfile(username);
-        int userId = oldUserProfile.getId();
-
-        // Password for update
+        UserProfile oldUserProfile = userService.getFullUserProfile(userId);
         try{
             userService.getUserProfileFromRequest(request, oldUserProfile);
         } catch (IllegalArgumentException e){
-            ResponseEntity.badRequest().build();
+            ResponseEntity.badRequest().body("Error: Unable to update");
         }
-
 
         userService.updateUserProfile(oldUserProfile);
         return ResponseEntity.ok().build();
@@ -81,8 +77,8 @@ public class UserController {
 
     @PostMapping("/api/user/userdelete")
     public ResponseEntity userDelete(@RequestBody JSONObject request){
-        String username = userService.getStringFieldFromRequest(request, "username");
-        userService.deleteUserProfile(username);
+        int userId = userService.getIntFieldFromRequest(request, "id");
+        userService.deleteUserProfile(userId);
         return ResponseEntity.ok().build();
     }
 

@@ -52,9 +52,14 @@ public class UserService {
         userProfileRepository.flush();
     }
 
+    public UserProfile getFullUserProfile(int userId){
+        return userProfileRepository.findUserProfileById(userId);
+    }
+
     public UserProfile getFullUserProfile(String username){
         return userProfileRepository.findUserProfileByUsername(username);
     }
+
 
     public UserProfile getPartUserProfile(String userName){
         UserProfile userProfile = userProfileRepository.findUserProfileByUsername(userName);
@@ -99,8 +104,8 @@ public class UserService {
         userProfileRepository.save(oldUserProfile);
     }
 
-    public void deleteUserProfile(String username){
-        userProfileRepository.deleteByUsername(username);
+    public void deleteUserProfile(int userId){
+        userProfileRepository.deleteById(userId);
     }
 
     public int getIntFieldFromRequest(JSONObject jsonObject, String fieldName){

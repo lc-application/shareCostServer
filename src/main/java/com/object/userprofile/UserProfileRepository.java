@@ -8,7 +8,8 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
   boolean existsByUsername(String username);
   boolean existsByUsernameAndPassword(String username, String password);
   UserProfile findUserProfileByUsername(String username);
-  void deleteByUsername(String username);
+  UserProfile findUserProfileById(int id);
+  void deleteById(int id);
 
 
 }
