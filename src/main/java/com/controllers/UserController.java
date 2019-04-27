@@ -55,7 +55,7 @@ public class UserController {
             if (userProfile.getEmail() != null){
                 EmailService.sendRegisterEmail(userProfile.getEmail(), userProfile.getUsername());
             }
-            return ResponseEntity.ok().body(userProfile);
+            return ResponseEntity.ok(userProfile);
         } else {
             return ResponseEntity.badRequest().body("create failed");
         }
