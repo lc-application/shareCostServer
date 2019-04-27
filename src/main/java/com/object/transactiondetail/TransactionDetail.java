@@ -1,5 +1,7 @@
 package com.object.transactiondetail;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,8 +15,9 @@ import javax.persistence.Table;
 @Table(name="transactiondetail")
 public class TransactionDetail {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @Column(name = "start")
     private String from;
@@ -23,7 +26,7 @@ public class TransactionDetail {
     private String to;
 
     @Column(name = "value")
-    private int value;
+    private double value;
 
     @Column(name = "title")
     private String title;
@@ -36,7 +39,7 @@ public class TransactionDetail {
 
     public TransactionDetail(){}
 
-    public TransactionDetail(String from, String to, int value, String title, String detail){
+    public TransactionDetail(String from, String to, double value, String title, String detail){
         this.from = from;
         this.to = to;
         this.value = value;
@@ -51,7 +54,7 @@ public class TransactionDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionDetail that = (TransactionDetail) o;
-        return id == that.id;
+        return id.equals(that.id);
     }
 
     @Override

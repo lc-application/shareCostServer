@@ -2,6 +2,8 @@ package com.controllers;
 
 import com.object.transaction.Transaction;
 import com.service.TransactionService;
+import com.util.Common;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class TransactionController {
 
         String from = fromObject.toString();
         String to = toObject.toString();
-        int value = Integer.valueOf(valueObject.toString());
+        double value = Double.parseDouble(valueObject.toString());
         String title = titleObject.toString();
         String detail = detailObject.toString();
 
@@ -50,12 +52,9 @@ public class TransactionController {
     @PostMapping("/api/transaction/getValue")
     public ResponseEntity transactionGet(@RequestBody JSONObject request) {
         try{
-            String from = parseFromFromRequest(request);
-            int total = transactionService.getTransactionTotal(from);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("username", from);
-            jsonObject.put("value", total);
-            return ResponseEntity.ok().body(jsonObject);
+            String fromId = Common.getStringFieldFromRequest(request, "from");
+            double total = transactionService.getTransactionTotal(fromId);
+            return ResponseEntity.ok().body(total);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Transaction get NUll Request");
         }
@@ -64,25 +63,13 @@ public class TransactionController {
     @PostMapping("/api/transaction/getDetail")
     public ResponseEntity transactionGetDetail(@RequestBody JSONObject request) {
         try{
-            String from = parseFromFromRequest(request);
-            List<Transaction> transactionList = transactionService.getAllTransactionByUserName(from);
+            String fromId = Common.getStringFieldFromRequest(request, "from");
+            List<Transaction> transactionList = transactionService.getAllTransactionByUserId(fromId);
             return ResponseEntity.ok().body(transactionList);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Transaction get NUll Request");
         }
 
-
-
     }
 
-    private String parseFromFromRequest(JSONObject request){
-        if (request == null) {
-            throw new IllegalArgumentException();
-        }
-        Object fromObject = request.get("from");
-        if (fromObject == null) {
-            throw new IllegalArgumentException();
-        }
-        return fromObject.toString();
-    }
 }

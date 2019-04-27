@@ -1,5 +1,7 @@
 package com.object.transaction;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -12,8 +14,9 @@ import javax.persistence.Table;
 @Table(name="transaction")
 public class Transaction {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @Column(name = "start")
     private String from;
@@ -22,14 +25,20 @@ public class Transaction {
     private String to;
 
     @Column(name = "value")
-    private int value;
+    private double value;
 
     public Transaction(){}
 
     public Transaction(String from, String to){
         this.from = from;
         this.to = to;
-        this.value = 0;
+        this.value = 0.0;
+    }
+
+    public Transaction(String from, String to, double value){
+        this.from = from;
+        this.to = to;
+        this.value = value;
     }
 
     public String getFrom() {
@@ -48,13 +57,15 @@ public class Transaction {
         this.to = to;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
+
+    public void addValue(double value) {this.value += value; }
 
     @Override
     public boolean equals(Object o) {

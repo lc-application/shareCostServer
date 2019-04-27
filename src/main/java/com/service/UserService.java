@@ -62,17 +62,20 @@ public class UserService {
 
 
     public UserProfile getPartUserProfile(String userName){
+        String notShown = "";
         UserProfile userProfile = userProfileRepository.findUserProfileByUsername(userName);
         if (!userProfile.getShowEmail()) {
-            userProfile.setEmail("Not Shown!");
+            userProfile.setEmail(notShown);
         }
         if (!userProfile.getShowPhoneNumber()) {
-            userProfile.setPhoneNumber("Not Shown!");
+            userProfile.setPhoneNumber(notShown);
         }
         if (!userProfile.getShowName()) {
-            userProfile.setFirstName("Not Shown!");
-            userProfile.setLastName("Not Shown!");
+            userProfile.setFirstName(notShown);
+            userProfile.setLastName(notShown);
         }
+
+        userProfile.setPassword(notShown);
 
         return userProfile;
     }
@@ -108,33 +111,6 @@ public class UserService {
         userProfileRepository.deleteById(userId);
     }
 
-    public int getIntFieldFromRequest(JSONObject jsonObject, String fieldName){
-        if (jsonObject == null){
-            throw new IllegalArgumentException();
-        }
-
-        Object obj = jsonObject.get(fieldName);
-
-        if (obj == null) {
-            throw new IllegalArgumentException();
-        }
-
-        return Integer.parseInt(obj.toString());
-    }
-
-    public String getStringFieldFromRequest(JSONObject jsonObject, String fieldName) {
-        if (jsonObject == null) {
-            throw new IllegalArgumentException();
-        }
-
-        Object obj = jsonObject.get(fieldName);
-
-        if (obj == null) {
-            throw new IllegalArgumentException();
-        }
-
-        return obj.toString();
-    }
 
     public void getUserProfileFromRequest(JSONObject jsonObject, UserProfile userProfile){
         // Profile to update

@@ -1,8 +1,10 @@
 package com.controllers;
 
+import com.object.userprofile.UserProfile;
 import com.service.EmailService;
 import com.service.UserService;
-import com.object.userprofile.UserProfile;
+import com.util.Common;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,8 @@ public class UserController {
 
     @PostMapping("/api/user/userlogin")
     public ResponseEntity userLogin(@RequestBody JSONObject request){
-        String username = userService.getStringFieldFromRequest(request, "username");
-        String password = userService.getStringFieldFromRequest(request, "password");
+        String username = Common.getStringFieldFromRequest(request, "username");
+        String password = Common.getStringFieldFromRequest(request, "password");
 
         if (!userService.checkUserNameExists(username)) {
             return ResponseEntity.badRequest().body("Error: Username doest not exists");
@@ -38,7 +40,7 @@ public class UserController {
     @PostMapping("/api/user/usercreate")
     public ResponseEntity userCreate(@RequestBody JSONObject request) {
 
-        String username = userService.getStringFieldFromRequest(request, "username");
+        String username = Common.getStringFieldFromRequest(request, "username");
 
         if (userService.checkUserNameExists(username)){
             return ResponseEntity.badRequest().body("Error: Username exists");
@@ -59,7 +61,7 @@ public class UserController {
 
     @PostMapping("/api/user/userupdate")
     public ResponseEntity userUpdate(@RequestBody JSONObject request) {
-        String userId = userService.getStringFieldFromRequest(request, "id");
+        String userId = Common.getStringFieldFromRequest(request, "id");
 
         UserProfile oldUserProfile = userService.getFullUserProfile(userId);
         try{
@@ -77,7 +79,7 @@ public class UserController {
 
     @PostMapping("/api/user/userdelete")
     public ResponseEntity userDelete(@RequestBody JSONObject request){
-        String userId = userService.getStringFieldFromRequest(request, "id");
+        String userId = Common.getStringFieldFromRequest(request, "id");
         userService.deleteUserProfile(userId);
         return ResponseEntity.ok().build();
     }
@@ -85,11 +87,11 @@ public class UserController {
     @PostMapping("/api/user/userpart")
     public ResponseEntity userPart(@RequestBody JSONObject request){
         try{
-            String username = userService.getStringFieldFromRequest(request, "username");
+            String username = Common.getStringFieldFromRequest(request, "username");
             UserProfile userProfile = userService.getPartUserProfile(username);
             return ResponseEntity.ok().body(userProfile);
         } catch (Exception e){
-            return ResponseEntity.badRequest().body("Not found username");
+            return ResponseEntity.badRequest().body("Error: Not found username");
         }
 
     }

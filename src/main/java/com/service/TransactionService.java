@@ -22,13 +22,16 @@ public class TransactionService {
         this.transactionDetailRepository = transactionDetailRepository;
     }
 
-    public List<Transaction> getAllTransactionByUserName(String username){
-        return transactionRepository.findAllByFrom(username);
+    public List<Transaction> getAllTransactionByUserId(String userId){
+        List<Transaction> fromList = transactionRepository.findAllByFrom(userId);
+        List<Transaction> toList = transactionRepository.findAllByTo(userId);
+        fromList.addAll(toList);
+        return fromList;
     }
 
-    public int getTransactionTotal(String username){
-        List<Transaction> transactionList = getAllTransactionByUserName(username);
-        int runningTotal = 0;
+    public double getTransactionTotal(String userId){
+        List<Transaction> transactionList = getAllTransactionByUserId(userId);
+        double runningTotal = 0;
         for(Transaction transaction : transactionList){
             runningTotal += transaction.getValue();
         }
@@ -36,14 +39,17 @@ public class TransactionService {
     }
 
 
-    public void createTransaction(String from, String to, int value, String title, String detail){
+    public void createTransaction(String from, String to, double value, String title, String detail){
         if (transactionRepository.existsByFromAndTo(from,to)){
             Transaction transaction = transactionRepository.findByFromAndTo(from, to);
-            transaction.setValue(transaction.getValue() + value);
+            transaction.addValue(value);
+            transactionRepository.save(transaction);
+        } else if (transactionRepository.existsByFromAndTo(to, from)) {
+            Transaction transaction = transactionRepository.findByFromAndTo(to, from);
+            transaction.addValue(value);
             transactionRepository.save(transaction);
         } else {
-            Transaction transaction = new Transaction(from, to);
-            transaction.setValue(value);
+            Transaction transaction = new Transaction(from, to, value);
             transactionRepository.save(transaction);
             transactionRepository.flush();
         }

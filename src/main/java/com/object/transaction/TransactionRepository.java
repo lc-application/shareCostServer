@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     List<Transaction> findAllByFrom(String from);
+    List<Transaction> findAllByTo(String to);
     Transaction findByFromAndTo(String from, String to);
     boolean existsByFromAndTo(String from, String to);
 }

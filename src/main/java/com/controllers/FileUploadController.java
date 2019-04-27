@@ -1,7 +1,8 @@
 package com.controllers;
 
-import com.service.UserService;
 import com.storage.StorageService;
+import com.util.Common;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +15,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUploadController {
 
     private final StorageService storageService;
-    private final UserService userService;
 
     @Autowired
-    public FileUploadController(StorageService storageService, UserService userService){
+    public FileUploadController(StorageService storageService){
         this.storageService = storageService;
-        this.userService = userService;
     }
 
     @PostMapping("/api/fileupload/user/")
     public ResponseEntity userFileUpload(@RequestParam JSONObject request){
-        String username = userService.getStringFieldFromRequest(request, "username");
+        String username = Common.getStringFieldFromRequest(request, "username");
 
         if (request.containsKey("file")){
             Object fileObject = request.get("file");
