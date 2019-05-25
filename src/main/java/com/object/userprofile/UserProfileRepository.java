@@ -11,7 +11,9 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
   boolean existsByUsernameAndPassword(String username, String password);
   UserProfile findUserProfileByUsername(String username);
   UserProfile findUserProfileById(String id);
-  List<UserProfile> findUserProfileByUsernameIsLike(String username);
+
+  List<UserProfile> findAllUserProfileByUsernameIsLike(String username);
+
   void deleteById(String id);
 
 

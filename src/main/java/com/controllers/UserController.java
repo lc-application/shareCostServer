@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -102,7 +103,8 @@ public class UserController {
     public ResponseEntity userSearch(@RequestBody JSONObject request) {
         try{
             String username = Common.getStringFieldFromRequest(request, "username");
-            List<UserProfile> userProfileList = userService.getUserProfileListByUsername(username);
+            List<UserProfile> userProfileList = new ArrayList<>();
+            userProfileList.add(userService.getPartUserProfile(username));
             return ResponseEntity.ok().body(userProfileList);
 
         } catch (Exception e){
@@ -110,5 +112,3 @@ public class UserController {
         }
     }
 }
-
-

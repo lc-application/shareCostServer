@@ -189,7 +189,7 @@ public class UserService {
 
     public List<UserProfile> getUserProfileListByUsername(String username) {
         String notShown = "";
-        List<UserProfile> result = userProfileRepository.findUserProfileByUsernameIsLike(username);
+        List<UserProfile> result = userProfileRepository.findAllUserProfileByUsernameIsLike(username);
         for(UserProfile r : result) {
             if (!r.getShowEmail()) {
                 r.setEmail(notShown);
