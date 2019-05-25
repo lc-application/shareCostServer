@@ -1,24 +1,31 @@
 package com.controllers;
 
+import com.object.userprofile.UserProfile;
 import com.service.FriendService;
+import com.service.UserService;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+@Transactional
 @RestController
 public class FriendController {
     private final FriendService friendService;
+    private final UserService userService;
 
     @Autowired
-    public FriendController(FriendService friendService){
+    public FriendController(FriendService friendService, UserService userService){
         this.friendService = friendService;
+        this.userService = userService;
     }
 
     @PostMapping("/api/friend/request")
@@ -60,12 +67,31 @@ public class FriendController {
             return ResponseEntity.badRequest().body("Null Request");
         }
         String from = fromObject.toString();
-        List<String> friendNameList = friendService.getFriendList(from);
-        JSONObject jsonObject = new JSONObject();
-        return ResponseEntity.ok().body(friendNameList);
+        List<String> friendIdList = friendService.getFriendList(from);
+        return ResponseEntity.ok().body(parseUserIdtoUserProfile(friendIdList));
 
     }
 
+    @PostMapping("/api/friend/pend")
+    public ResponseEntity friendPending(@RequestBody JSONObject request){
+        if (request == null) {
+            return ResponseEntity.badRequest().body("Null Request");
+        }
+        Object fromObject = request.get("from");
+        if (fromObject == null) {
+            return ResponseEntity.badRequest().body("Null Request");
+        }
+        String from = fromObject.toString();
+        List<String> friendIdList = friendService.getRequestList(from);
+        return ResponseEntity.ok().body(parseUserIdtoUserProfile(friendIdList));
+    }
+
+    private List<UserProfile> parseUserIdtoUserProfile(List<String> userIdList){
+        List<UserProfile>   result = new ArrayList<>();
+        userIdList.forEach(u -> {result.add(userService.getFullUserProfileById(u));});
+        return result;
+
+    }
     private String[] parseFromAndToFromRequest(JSONObject request){
         String[] result = new String[2];
         if (request == null) {

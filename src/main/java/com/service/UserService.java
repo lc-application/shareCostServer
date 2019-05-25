@@ -79,6 +79,25 @@ public class UserService {
 
         return userProfile;
     }
+
+    public UserProfile getPartUserProfileById(String userId){
+        String notShown = "";
+        UserProfile userProfile = userProfileRepository.findUserProfileById(userId);
+        if (!userProfile.getShowEmail()) {
+            userProfile.setEmail(notShown);
+        }
+        if (!userProfile.getShowPhoneNumber()) {
+            userProfile.setPhoneNumber(notShown);
+        }
+        if (!userProfile.getShowName()) {
+            userProfile.setFirstName(notShown);
+            userProfile.setLastName(notShown);
+        }
+
+        userProfile.setPassword(notShown);
+
+        return userProfile;
+    }
     private boolean checkUserProfileEmail(String email){
         return userProfileRepository.existsByEmail(email);
     }

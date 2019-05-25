@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FriendRepository extends JpaRepository<Friend, Integer> {
+    void deleteAllByFromAndTo(String from, String to);
     void deleteByFromAndTo(String from, String to);
     Friend findByFromAndTo(String from, String to);
     boolean existsByFromAndTo(String from, String to);

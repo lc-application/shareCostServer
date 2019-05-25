@@ -17,6 +17,10 @@ public class FriendService {
         this.friendRepository = friendRepository;
     }
 
+    public boolean existRelation(String from, String to) {
+        return friendRepository.existsByFromAndTo(from, to) ||
+                friendRepository.existsByFromAndTo(to, from);
+    }
     public void confirmFriend(String from, String to){
         Friend friend = friendRepository.findByFromAndTo(from, to);
         if (friend == null){
@@ -27,26 +31,26 @@ public class FriendService {
     }
 
     public void requestFriend(String from, String to){
-        friendRepository.save(new Friend(from, to));
-        friendRepository.flush();
+        if (!existRelation(from, to)){
+            friendRepository.save(new Friend(from, to));
+            friendRepository.flush();
+        }
     }
 
     public void deleteFriend(String from, String to){
         if (friendRepository.existsByFromAndTo(from, to)){
-            friendRepository.deleteByFromAndTo(from, to);
-        } else {
-            friendRepository.deleteByFromAndTo(to, from);
+            friendRepository.deleteAllByFromAndTo(from, to);
+        }
+        if (friendRepository.existsByFromAndTo(to, from)){
+            friendRepository.deleteAllByFromAndTo(to, from);
         }
 
     }
 
     public List<String> getFriendList(String from){
-        List<Friend> friendList = friendRepository.findAllByFromAndStatus(from, 1);
-        friendList.addAll(friendRepository.findAllByToAndStatus(from, 1));
         List<String> result = new ArrayList<>();
-        for(Friend f : friendList){
-            result.add(f.getTo());
-        }
+        friendRepository.findAllByFromAndStatus(from, 1).forEach(f -> {result.add(f.getTo());});
+        friendRepository.findAllByToAndStatus(from, 1).forEach(f -> {result.add(f.getFrom());});
         return result;
     }
 
