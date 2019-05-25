@@ -1,6 +1,5 @@
 package com.controllers;
 
-import com.object.userprofile.UserProfile;
 import com.service.FriendService;
 import com.service.UserService;
 
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -68,7 +66,7 @@ public class FriendController {
         }
         String from = fromObject.toString();
         List<String> friendIdList = friendService.getFriendList(from);
-        return ResponseEntity.ok().body(parseUserIdtoUserProfile(friendIdList));
+        return ResponseEntity.ok().body(userService.parseUserIdtoUserProfile(friendIdList));
 
     }
 
@@ -83,15 +81,10 @@ public class FriendController {
         }
         String from = fromObject.toString();
         List<String> friendIdList = friendService.getRequestList(from);
-        return ResponseEntity.ok().body(parseUserIdtoUserProfile(friendIdList));
+        return ResponseEntity.ok().body(userService.parseUserIdtoUserProfile(friendIdList));
     }
 
-    private List<UserProfile> parseUserIdtoUserProfile(List<String> userIdList){
-        List<UserProfile>   result = new ArrayList<>();
-        userIdList.forEach(u -> {result.add(userService.getFullUserProfileById(u));});
-        return result;
 
-    }
     private String[] parseFromAndToFromRequest(JSONObject request){
         String[] result = new String[2];
         if (request == null) {

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -96,6 +98,17 @@ public class UserController {
 
     }
 
+    @PostMapping("/api/user/usersearch")
+    public ResponseEntity userSearch(@RequestBody JSONObject request) {
+        try{
+            String username = Common.getStringFieldFromRequest(request, "username");
+            List<UserProfile> userProfileList = userService.getUserProfileListByUsername(username);
+            return ResponseEntity.ok().body(userProfileList);
+
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: Not found username");
+        }
+    }
 }
 
 

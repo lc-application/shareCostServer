@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -178,5 +180,29 @@ public class UserService {
             }
         }
     }
+    public List<UserProfile> parseUserIdtoUserProfile(List<String> userIdList){
+        List<UserProfile>   result = new ArrayList<>();
+        userIdList.forEach(u -> {result.add(getFullUserProfileById(u));});
+        return result;
 
+    }
+
+    public List<UserProfile> getUserProfileListByUsername(String username) {
+        String notShown = "";
+        List<UserProfile> result = userProfileRepository.findUserProfileByUsernameIsLike(username);
+        for(UserProfile r : result) {
+            if (!r.getShowEmail()) {
+                r.setEmail(notShown);
+            }
+            if (!r.getShowPhoneNumber()) {
+                r.setPhoneNumber(notShown);
+            }
+            if (!r.getShowName()) {
+                r.setFirstName(notShown);
+                r.setLastName(notShown);
+            }
+        }
+        return result;
+
+    }
 }
